@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Convite de Aniversário</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Quicksand:wght@600&display=swap" rel="stylesheet"/>
+    <style>
+        html, body { height: 100%; margin: 0; padding: 0; }
+        body {
+            min-height: 100vh; width: 100vw; overflow: hidden;
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Montserrat', sans-serif;
+            background: #10171c;
+            background-image:
+                linear-gradient(0deg, rgba(255,255,255,0.035) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+            background-size: 36px 36px, 36px 36px;
+        }
+        .envelope-container { width: 100vw; height: 100vh; display: flex; justify-content: center; align-items: center; }
+        .envelope {
+            width: 95vw; max-width: 445px; height: 65vw; max-height: 410px; min-height: 370px; min-width: 270px;
+            position: relative; border-radius: 25px;
+            box-shadow: 0 10px 32px 6px #000b;
+            background: linear-gradient(135deg, #2a3744 65%, #1b2531 100%);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            z-index: 2; opacity: 1; transition: opacity 0.7s cubic-bezier(.82,-0.13,.36,1.22);
+        }
+        .envelope.fade-out { opacity: 0; pointer-events: none; }
+        .front, .back { width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .front { position: absolute; width: 100%; height: 100%; z-index: 2; background: transparent; }
+        .back { position: relative; width: 100%; z-index: 3; padding: 30px 4vw 18px 4vw; box-sizing: border-box; text-align: center; }
+        .convite-msg { font-family: 'Quicksand', sans-serif; font-size: 1.18rem; color: #fdfde7; margin: 15px 0 22px 0; font-weight: 600; line-height: 1.55; letter-spacing: 0.01em; text-shadow: 0 2px 6px #0004; }
+        .back input {
+            padding: 11px 20px; width: 94%; max-width: 242px;
+            border-radius: 50px; border: 1.3px solid #eee3;
+            background-color: #fff1; color: #e7e8db; font-size: 1rem;
+            margin-bottom: 14px; font-family: 'Montserrat', sans-serif;
+            outline: none; transition: border .2s; box-shadow: 0 2px 12px #0002 inset;
+        }
+        .back input:focus { border-color: #e8c547; background: #232c39; color: #fff; }
+        .confirm-button {
+            background: linear-gradient(145deg, #e8c547, #b39b37); color: #fff; border: none;
+            padding: 11px 0; font-size: 1rem; border-radius: 50px;
+            font-family: 'Montserrat', sans-serif; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
+            margin-top: 4px; margin-bottom: 4px; transition: opacity 0.3s; cursor: pointer; opacity: .95;
+            width: 94%; max-width: 242px; box-shadow: 0 6px 18px #0001;
+        }
+        .confirm-button:disabled { opacity: 0.5; cursor: not-allowed; }
+        .thank-you-message {
+            display: none; font-size: 2.1rem; color: #e8c547;
+            font-family: 'Quicksand', sans-serif; font-weight: 700; text-align: center; letter-spacing: 0.01em;
+            position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+            z-index: 3; opacity: 0; animation: fadeInThanks 0.8s 0.3s cubic-bezier(.22,1,.36,1) forwards;
+        }
+        @keyframes fadeInThanks { 0%{opacity:0;transform:translate(-50%,-48%) scale(0.9);} 80%{opacity:1;transform:translate(-50%,-53%) scale(1.05);} 100%{opacity:1;transform:translate(-50%,-50%) scale(1);} }
+        @media (max-width: 600px) { .envelope { width: 99vw; min-width: 0; height: 90vw; min-height: 225px; max-height: 99vw;} .front, .back { padding: 0 2vw;} .convite-msg { font-size: 1.02rem;} .back input, .confirm-button { font-size: 0.95rem; } .thank-you-message { font-size: 1.5rem;} }
+    </style>
+</head>
+<body>
+<div class="envelope-container">
+    <div class="envelope" id="envelope">
+        <div class="front" id="frontFace">
+            <button class="confirm-button" id="openButton" style="font-size:1.23rem;padding:19px 0;max-width:320px;width:90%;margin-top:0;">ABRIR CONVITE</button>
+        </div>
+        <div class="back" id="backFace" style="display:none;">
+            <div class="convite-msg">
+                Adoraria ter você<br>
+                celebrando meu dia<br>
+                dia <b>27 de Fevereiro</b><br>
+                às <b>12:30</b><br>
+                no ClassicoBeachClub,<br>
+                na lagoa.<br>
+                Avenida Epitácio Pessoa 3300.
+            </div>
+            <input type="text" placeholder="Seu nome" id="nameInput" autocomplete="off"/>
+            <button class="confirm-button" id="confirmButton" disabled>Confirmar Presença</button>
+        </div>
+    </div>
+    <div class="thank-you-message" id="thankYouMessage">Obrigada!!</div>
+</div>
+<script>
+const envelope = document.getElementById("envelope");
+const openButton = document.getElementById("openButton");
+const frontFace = document.getElementById("frontFace");
+const backFace = document.getElementById("backFace");
+const confirmButton = document.getElementById("confirmButton");
+const nameInput = document.getElementById("nameInput");
+const thankYouMessage = document.getElementById("thankYouMessage");
+
+// Mostra só a frente no início
+frontFace.style.display = "flex";
+backFace.style.display = "none";
+
+// Abrir convite (mostra verso)
+openButton.addEventListener("click", () => {
+    frontFace.style.display = "none";
+    backFace.style.display = "flex";
+});
+
+// Habilita o botão se preencher o nome
+nameInput.addEventListener("input", () => {
+    confirmButton.disabled = nameInput.value.trim().length < 1;
+});
+
+// Confirmar presença (fade out, envia email)
+confirmButton.addEventListener("click", () => {
+    confirmButton.disabled = true;
+    fetch('/send-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: nameInput.value.trim() })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === "success") {
+            envelope.classList.add("fade-out");
+            setTimeout(() => {
+                envelope.style.display = "none";
+                thankYouMessage.style.display = "block";
+            }, 700);
+        } else {
+            alert("Erro ao enviar confirmação: " + (data.reason || "Tente novamente"));
+            confirmButton.disabled = false;
+        }
+    })
+    .catch((error) => {
+        alert("Erro ao enviar confirmação.");
+        confirmButton.disabled = false;
+    });
+});
+</script>
+</body>
+</html>
