@@ -14,8 +14,8 @@ Este é um projeto de convite de aniversário interativo construído com **Pytho
 
 1. **Clone o repositório**
    ```bash
-   git clone https://github.com/SEU_USUARIO/SEU_REPO.git
-   cd convite-aniversario-flask
+   git clone https://github.com/FerrariRafaello/convite.git
+   cd convite
 Instale as dependências
 
 bash
