@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Convite de Aniversário Interativo – Flask + Python
 
 Este é um projeto de convite de aniversário interativo construído com **Python (Flask)** no backend e HTML/CSS/JS moderno no frontend. Ao confirmar presença, o nome é enviado via e-mail para o organizador automaticamente.
@@ -55,3 +56,6 @@ Ao confirmar presença, o nome digitado é enviado automaticamente para o e-mail
 Licença
 MIT License – Livre para uso, modificação e aprendizado.
 
+=======
+# convite
+>>>>>>> c0c00d87583a1f931691e25007764ce8554f99f5
