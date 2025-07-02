@@ -14,7 +14,7 @@ Este é um projeto de convite de aniversário interativo construído com **Pytho
 
 1. **Clone o repositório**
    ```bash
-   git clone https://github.com/FerrariRafaello/convite.git
+   git clone https://github.com/FerrariRafaello/Convite.git
    cd convite
 Instale as dependências
 
